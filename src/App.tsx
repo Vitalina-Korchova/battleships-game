@@ -1,15 +1,18 @@
 import "./App.css";
+import { useState } from "react";
+import IntroBlock from "./components/IntroBlock";
+import PlaceShipsBlock from "./components/PlaceShipsBlock";
 
 export default function App() {
+  const [startGame, setStartGame] = useState(false);
+
+  const start = () => {
+    setStartGame(true);
+  };
   return (
     <div>
       <div className="containerApp">
-        <div className="blockLogo">
-          <span className="nameGame">Морський бій</span>
-          <button type="button" className="buttonStart">
-            Почати гру
-          </button>
-        </div>
+        {!startGame ? <IntroBlock start={start} /> : <PlaceShipsBlock />}
       </div>
     </div>
   );
