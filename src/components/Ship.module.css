@@ -1,0 +1,47 @@
+.headShip {
+  display: flex;
+  margin: auto;
+  width: 35px;
+  height: 35px;
+  background-color: #008dda;
+  border-radius: 100% / 160% 160% 0% 0%;
+}
+
+.tailShip {
+  display: flex;
+  margin: auto;
+  width: 35px;
+  height: 35px;
+  background-color: #008dda;
+  border-bottom-left-radius: 40%;
+  border-bottom-right-radius: 40%;
+}
+
+.circle {
+  display: flex;
+  margin: auto;
+  justify-content: center;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #011335;
+}
+
+.bodyShip {
+  display: flex;
+  margin: auto;
+  justify-content: center;
+  width: 35px;
+  height: 35px;
+  background-color: #008dda;
+}
+
+.singleShip {
+  display: flex;
+  margin: auto;
+  justify-content: center;
+  width: 35px;
+  height: 35px;
+  background-color: #008dda;
+  border-radius: 20%;
+}
