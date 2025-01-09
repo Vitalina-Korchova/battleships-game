@@ -1,5 +1,4 @@
 import styles from "./Ship.module.css";
-
 export default function Ship({ amount }: { amount: number }) {
   if (amount === 1) {
     return (
