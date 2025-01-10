@@ -12,6 +12,36 @@
   border: 2px solid rgb(215, 215, 215);
 }
 
+.containerShips {
+  margin-top: 80px;
+  padding: 20px;
+  border: 2px solid rgb(2, 1, 47);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: 10px;
+  flex-wrap: wrap;
+  width: 250px;
+  height: 340px;
+  border-radius: 10px;
+}
+
+.textShips {
+  font-size: 18px;
+  color: #09003c;
+  text-align: center;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.textPlaceShips {
+  font-size: 35px;
+  color: #09003c;
+  font-weight: 700;
+  margin-left: 40px;
+}
+
 .wrapperBattlefield {
   display: flex;
   flex-direction: row;
@@ -55,4 +85,20 @@
   justify-content: center;
   display: flex;
   align-items: flex-end;
+}
+
+.selectedCell {
+  background-color: #88b2f3;
+  width: 40px;
+  height: 40px;
+  border: 1px solid #09003c;
+  border-radius: 4px;
+}
+
+.occupiedCell {
+  background-color: #012f74;
+  width: 40px;
+  height: 40px;
+  border: 1px solid #09003c;
+  border-radius: 4px;
 }

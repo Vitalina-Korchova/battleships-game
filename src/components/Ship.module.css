@@ -45,3 +45,7 @@
   background-color: #008dda;
   border-radius: 20%;
 }
+
+.innerShip {
+  cursor: grab;
+}
