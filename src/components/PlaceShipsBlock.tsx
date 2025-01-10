@@ -5,9 +5,15 @@ import { useState } from "react";
 
 export default function PlaceShipsBlock() {
   const [selectedCell, setSelectedCell] = useState<string[]>([]); //для відображення кужи поставити корабель(підсвітка клітинок)
-  const [selectedShip, setSelectedShip] = useState<number | null>(null); //обраний корабель
+  const [selectedShip, setSelectedShip] = useState<{
+    amount: number | null;
+    id: string | null;
+  }>({
+    amount: null,
+    id: null,
+  }); //обраний корабель
   const [occupiedCells, setOccupiedCells] = useState<string[]>([]); //зайняті клітинки(розміщений корабель)
-  const [placedShips, setPlacedShips] = useState<number[]>([]); //для визначенння чи корабель вже був розміщений чи ще ні
+  const [placedShips, setPlacedShips] = useState<string[]>([]); //для визначенння чи корабель вже був розміщений чи ще ні
 
   // console.log("Occupied cells: ", occupiedCells);
 
@@ -15,25 +21,25 @@ export default function PlaceShipsBlock() {
     setSelectedCell([]);
   };
 
-  const handleClickShip = (amount: number) => {
-    setSelectedShip(amount);
-    console.log(`Was click the ship  ${amount}`);
+  const handleClickShip = (amount: number, id: string) => {
+    setSelectedShip({ amount, id });
+    console.log(`Was click the ship ${amount} with id ${id}`);
   };
 
   const mouseEnter = (e: React.DragEvent<HTMLDivElement>) => {
     const cellId = e.target.id;
     const cellNumber = parseInt(cellId.split("-")[1], 10);
-    if (selectedShip === 1) {
+    if (selectedShip.amount === 1) {
       if (cellNumber <= 100) {
         const verticalCells = [`cell-${cellNumber}`];
         setSelectedCell(verticalCells);
       }
-    } else if (selectedShip === 2) {
+    } else if (selectedShip.amount === 2) {
       if (cellNumber <= 90) {
         const verticalCells = [`cell-${cellNumber}`, `cell-${cellNumber + 10}`];
         setSelectedCell(verticalCells);
       }
-    } else if (selectedShip === 3) {
+    } else if (selectedShip.amount === 3) {
       if (cellNumber <= 80) {
         const verticalCells = [
           `cell-${cellNumber}`,
@@ -42,7 +48,7 @@ export default function PlaceShipsBlock() {
         ];
         setSelectedCell(verticalCells);
       }
-    } else if (selectedShip === 4) {
+    } else if (selectedShip.amount === 4) {
       if (cellNumber <= 70) {
         const verticalCells = [
           `cell-${cellNumber}`,
@@ -62,11 +68,14 @@ export default function PlaceShipsBlock() {
       occupiedCells.includes(cell)
     );
 
-    if (!isOccupied && selectedShip !== null) {
+    if (!isOccupied && selectedShip.id !== null) {
       setOccupiedCells((prevOccupied) => [...prevOccupied, ...selectedCell]);
-      setPlacedShips((prevPlaced) => [...prevPlaced, selectedShip]);
+      setPlacedShips((prevPlaced) => [
+        ...prevPlaced,
+        selectedShip.id as string,
+      ]);
       setSelectedCell([]);
-      setSelectedShip(null);
+      setSelectedShip({ amount: null, id: null });
     }
   };
 
@@ -89,35 +98,35 @@ export default function PlaceShipsBlock() {
             Натисніть на будь-який корабель і відмідьте його розташування на
             полі 👇
           </span>
-          {!placedShips.includes(1) && (
+          {!placedShips.includes("ship-1-1") && (
             <Ship id={"ship-1-1"} amount={1} onClick={handleClickShip} />
           )}
-          {!placedShips.includes(1) && (
+          {!placedShips.includes("ship-1-2") && (
             <Ship id={"ship-1-2"} amount={1} onClick={handleClickShip} />
           )}
-          {!placedShips.includes(1) && (
+          {!placedShips.includes("ship-1-3") && (
             <Ship id={"ship-1-3"} amount={1} onClick={handleClickShip} />
           )}
-          {!placedShips.includes(1) && (
+          {!placedShips.includes("ship-1-4") && (
             <Ship id={"ship-1-4"} amount={1} onClick={handleClickShip} />
           )}
-          {!placedShips.includes(2) && (
+          {!placedShips.includes("ship-2-1") && (
             <Ship id={"ship-2-1"} amount={2} onClick={handleClickShip} />
           )}
-          {!placedShips.includes(2) && (
+          {!placedShips.includes("ship-2-2") && (
             <Ship id={"ship-2-2"} amount={2} onClick={handleClickShip} />
           )}
-          {!placedShips.includes(2) && (
+          {!placedShips.includes("ship-2-3") && (
             <Ship id={"ship-2-3"} amount={2} onClick={handleClickShip} />
           )}
 
-          {!placedShips.includes(3) && (
+          {!placedShips.includes("ship-3-1") && (
             <Ship id={"ship-3-1"} amount={3} onClick={handleClickShip} />
           )}
-          {!placedShips.includes(3) && (
+          {!placedShips.includes("ship-3-2") && (
             <Ship id={"ship-3-2"} amount={3} onClick={handleClickShip} />
           )}
-          {!placedShips.includes(4) && (
+          {!placedShips.includes("ship-4") && (
             <Ship id={"ship-4"} amount={4} onClick={handleClickShip} />
           )}
         </div>
