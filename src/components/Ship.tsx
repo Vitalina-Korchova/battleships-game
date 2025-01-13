@@ -4,17 +4,17 @@ export default function Ship({
   id,
   amount,
   onClick,
+  selectedShipId,
 }: {
   id: string;
   amount: number;
   onClick: (amount: number, id: string) => void;
+  selectedShipId: string | null;
 }) {
-  const [isSelected, setIsSelected] = useState(false);
-
   const handleShipClick = () => {
-    setIsSelected(!isSelected);
     onClick(amount, id);
   };
+  const isSelected = selectedShipId === id;
   const selectedClass = isSelected ? styles.selectedShip : "";
 
   if (amount === 1) {
@@ -32,6 +32,7 @@ export default function Ship({
   if (amount === 2) {
     return (
       <div
+        id={id}
         className={`${styles.innerShip} ${selectedClass}`}
         onClick={handleShipClick}
       >
@@ -47,6 +48,7 @@ export default function Ship({
   if (amount === 3) {
     return (
       <div
+        id={id}
         className={`${styles.innerShip} ${selectedClass}`}
         onClick={handleShipClick}
       >
@@ -66,6 +68,7 @@ export default function Ship({
   if (amount === 4) {
     return (
       <div
+        id={id}
         className={`${styles.innerShip} ${selectedClass}`}
         onClick={handleShipClick}
       >

@@ -48,6 +48,7 @@
 
 .innerShip {
   cursor: grab;
+  transition: transform 0.3s ease;
 }
 
 .selectedShip {

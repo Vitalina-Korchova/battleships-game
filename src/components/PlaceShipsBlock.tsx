@@ -1,4 +1,4 @@
-import styles from "./BattlefieldItems.module.css";
+import styles from "./PlaceShips.module.css";
 import Battlefield from "./Battlefield";
 import Ship from "./Ship";
 import { useState } from "react";
@@ -79,6 +79,18 @@ export default function PlaceShipsBlock() {
     }
   };
 
+  const handleRotateShip = () => {
+    if (selectedShip.id) {
+      const ship = document.getElementById(selectedShip.id);
+      if (ship) {
+        const currentRotation = ship.style.transform;
+        ship.style.transform =
+          currentRotation === "rotate(-90deg)"
+            ? "rotate(0deg)"
+            : "rotate(-90deg)";
+      }
+    }
+  };
   return (
     <>
       <div className={styles.container}>
@@ -98,37 +110,95 @@ export default function PlaceShipsBlock() {
             Натисніть на будь-який корабель і відмідьте його розташування на
             полі 👇
           </span>
-          {!placedShips.includes("ship-1-1") && (
-            <Ship id={"ship-1-1"} amount={1} onClick={handleClickShip} />
-          )}
-          {!placedShips.includes("ship-1-2") && (
-            <Ship id={"ship-1-2"} amount={1} onClick={handleClickShip} />
-          )}
-          {!placedShips.includes("ship-1-3") && (
-            <Ship id={"ship-1-3"} amount={1} onClick={handleClickShip} />
-          )}
-          {!placedShips.includes("ship-1-4") && (
-            <Ship id={"ship-1-4"} amount={1} onClick={handleClickShip} />
-          )}
-          {!placedShips.includes("ship-2-1") && (
-            <Ship id={"ship-2-1"} amount={2} onClick={handleClickShip} />
-          )}
-          {!placedShips.includes("ship-2-2") && (
-            <Ship id={"ship-2-2"} amount={2} onClick={handleClickShip} />
-          )}
-          {!placedShips.includes("ship-2-3") && (
-            <Ship id={"ship-2-3"} amount={2} onClick={handleClickShip} />
-          )}
-
-          {!placedShips.includes("ship-3-1") && (
-            <Ship id={"ship-3-1"} amount={3} onClick={handleClickShip} />
-          )}
-          {!placedShips.includes("ship-3-2") && (
-            <Ship id={"ship-3-2"} amount={3} onClick={handleClickShip} />
-          )}
-          {!placedShips.includes("ship-4") && (
-            <Ship id={"ship-4"} amount={4} onClick={handleClickShip} />
-          )}
+          <div className={styles.blockShipsRow}>
+            {!placedShips.includes("ship-1-1") && (
+              <Ship
+                id={"ship-1-1"}
+                amount={1}
+                onClick={handleClickShip}
+                selectedShipId={selectedShip.id}
+              />
+            )}
+            {!placedShips.includes("ship-1-2") && (
+              <Ship
+                id={"ship-1-2"}
+                amount={1}
+                onClick={handleClickShip}
+                selectedShipId={selectedShip.id}
+              />
+            )}
+            {!placedShips.includes("ship-1-3") && (
+              <Ship
+                id={"ship-1-3"}
+                amount={1}
+                onClick={handleClickShip}
+                selectedShipId={selectedShip.id}
+              />
+            )}
+            {!placedShips.includes("ship-1-4") && (
+              <Ship
+                id={"ship-1-4"}
+                amount={1}
+                onClick={handleClickShip}
+                selectedShipId={selectedShip.id}
+              />
+            )}
+          </div>
+          <div className={styles.blockShipsRow}>
+            {!placedShips.includes("ship-2-1") && (
+              <Ship
+                id={"ship-2-1"}
+                amount={2}
+                onClick={handleClickShip}
+                selectedShipId={selectedShip.id}
+              />
+            )}
+            {!placedShips.includes("ship-2-2") && (
+              <Ship
+                id={"ship-2-2"}
+                amount={2}
+                onClick={handleClickShip}
+                selectedShipId={selectedShip.id}
+              />
+            )}
+            {!placedShips.includes("ship-2-3") && (
+              <Ship
+                id={"ship-2-3"}
+                amount={2}
+                onClick={handleClickShip}
+                selectedShipId={selectedShip.id}
+              />
+            )}
+          </div>
+          <div className={styles.blockShipsRow}>
+            {!placedShips.includes("ship-3-1") && (
+              <Ship
+                id={"ship-3-1"}
+                amount={3}
+                onClick={handleClickShip}
+                selectedShipId={selectedShip.id}
+              />
+            )}
+            {!placedShips.includes("ship-3-2") && (
+              <Ship
+                id={"ship-3-2"}
+                amount={3}
+                onClick={handleClickShip}
+                selectedShipId={selectedShip.id}
+              />
+            )}
+            {!placedShips.includes("ship-4") && (
+              <Ship
+                id={"ship-4"}
+                amount={4}
+                onClick={handleClickShip}
+                selectedShipId={selectedShip.id}
+              />
+            )}
+          </div>
+          <button onClick={handleRotateShip} className={styles.buttonRotate}>
+            🗘
+          </button>
         </div>
       </div>
     </>
