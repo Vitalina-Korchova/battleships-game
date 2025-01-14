@@ -51,3 +51,18 @@
   font-size: 25px;
   color: rgb(3, 19, 74);
 }
+
+.btnResetShips {
+  border-radius: 10px;
+  font-size: 16px;
+  padding: 5px;
+  border: 2px solid rgb(158, 2, 2);
+  color: rgb(158, 2, 2);
+  cursor: pointer;
+  transition: 0.5s;
+}
+
+.btnResetShips:hover {
+  background-color: rgb(158, 2, 2);
+  color: white;
+}

@@ -15,6 +15,7 @@ export default function PlaceShipsBlock() {
   const [occupiedCells, setOccupiedCells] = useState<string[]>([]); //зайняті клітинки(розміщений корабель)
   const [placedShips, setPlacedShips] = useState<string[]>([]); //для визначенння чи корабель вже був розміщений чи ще ні
   const [shipDirections, setShipDirections] = useState<{
+    //встановлення напряму корабля
     [key: string]: string;
   }>({});
 
@@ -160,6 +161,16 @@ export default function PlaceShipsBlock() {
       }
     }
   };
+
+  const resetShipsPosition = () => {
+    setOccupiedCells([]);
+    setPlacedShips([]);
+    setSelectedCell([]);
+    setSelectedShip({ amount: null, id: null });
+
+    setShipDirections({});
+  };
+
   return (
     <>
       <div className={styles.container}>
@@ -265,6 +276,15 @@ export default function PlaceShipsBlock() {
               />
             )}
           </div>
+          <button
+            className={styles.btnResetShips}
+            style={{
+              display: occupiedCells.length === 20 ? "block" : "none",
+            }}
+            onClick={resetShipsPosition}
+          >
+            Скинути розміщення
+          </button>
           <button onClick={handleRotateShip} className={styles.buttonRotate}>
             🗘
           </button>
