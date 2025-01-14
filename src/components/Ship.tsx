@@ -14,6 +14,7 @@ export default function Ship({
   const handleShipClick = () => {
     onClick(amount, id);
   };
+
   const isSelected = selectedShipId === id;
   const selectedClass = isSelected ? styles.selectedShip : "";
 
