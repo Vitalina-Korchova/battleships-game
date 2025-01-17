@@ -1,9 +1,6 @@
 .container {
   margin: auto;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-around;
+
   background-color: rgb(237, 235, 235);
   width: 1100px;
   height: 600px;
@@ -12,8 +9,16 @@
   border: 2px solid rgb(215, 215, 215);
 }
 
+.innerContainer {
+  padding: 40px;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  align-items: center;
+  justify-content: space-around;
+}
+
 .containerShips {
-  margin-top: 80px;
+  margin-top: 25px;
   padding: 15px;
   border: 2px solid rgb(2, 1, 47);
   display: flex;
@@ -44,7 +49,7 @@
   font-size: 35px;
   color: #09003c;
   font-weight: 700;
-  margin-left: 40px;
+  margin-left: 5%;
 }
 
 .buttonRotate {
@@ -65,4 +70,41 @@
 .btnResetShips:hover {
   background-color: rgb(158, 2, 2);
   color: white;
+}
+
+.buttonStart {
+  padding: 10px 20px;
+  display: flex;
+  justify-self: end;
+  text-align: center;
+  text-transform: uppercase;
+  transition: 0.5s;
+  background-size: 200% auto;
+  color: white;
+  width: 100px;
+  border-radius: 10px;
+  border: 0px;
+  font-weight: 700;
+  font-size: 18px;
+  box-shadow: 0px 0px 14px -7px #0502ce;
+  background-image: linear-gradient(
+    45deg,
+    #3cd4fe 0%,
+    #4841d8 51%,
+    #0368db 100%
+  );
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.buttonStart:hover {
+  background-position: right center;
+  color: #fff;
+  text-decoration: none;
+}
+
+.buttonStart:active {
+  transform: scale(0.95);
 }
