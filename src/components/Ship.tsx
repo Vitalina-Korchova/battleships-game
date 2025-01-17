@@ -1,5 +1,4 @@
 import styles from "./Ship.module.css";
-import { useState } from "react";
 export default function Ship({
   id,
   amount,

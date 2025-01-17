@@ -1,9 +1,15 @@
 import styles from "./PlaceShips.module.css";
 import Battlefield from "./Battlefield";
 import Ship from "./Ship";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-export default function PlaceShipsBlock() {
+export default function PlaceShipsBlock({
+  setOpenBattleshipsBoard,
+  setArrOccupiedCells,
+}: {
+  setOpenBattleshipsBoard: React.Dispatch<React.SetStateAction<boolean>>;
+  setArrOccupiedCells: React.Dispatch<React.SetStateAction<string[]>>;
+}) {
   const [selectedCell, setSelectedCell] = useState<string[]>([]); //для відображення кужи поставити корабель(підсвітка клітинок)
   const [selectedShip, setSelectedShip] = useState<{
     amount: number | null;
@@ -18,8 +24,13 @@ export default function PlaceShipsBlock() {
     //встановлення напряму корабля
     [key: string]: string;
   }>({});
+  const [close, setClose] = useState(false); //стан закриття вікна розміщнггя кораблів
 
   // console.log("Occupied cells: ", occupiedCells);
+
+  useEffect(() => {
+    setArrOccupiedCells(occupiedCells);
+  }, [occupiedCells, setArrOccupiedCells]);
 
   const mouseLeave = () => {
     setSelectedCell([]);
@@ -205,12 +216,21 @@ export default function PlaceShipsBlock() {
     setShipDirections({});
   };
 
+  const startGameOpenBoard = () => {
+    setOpenBattleshipsBoard(true);
+    setClose(true);
+  };
+
   return (
     <>
-      <div className={styles.container}>
+      <div
+        style={{ display: !close ? "flex" : "none" }}
+        className={styles.container}
+      >
         <div className={styles.innerContainer}>
           <span className={styles.textPlaceShips}>Розташуйте кораблі 🌊</span>
           <button
+            onClick={startGameOpenBoard}
             disabled={occupiedCells.length !== 20}
             className={styles.buttonStart}
           >
