@@ -1,5 +1,5 @@
 import styles from "./PlaceShips.module.css";
-import Battlefield from "./Battlefield";
+import Battlefield from "./BattlefieldPlace";
 import Ship from "./Ship";
 import { useState, useEffect } from "react";
 

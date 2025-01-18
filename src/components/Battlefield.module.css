@@ -1,0 +1,45 @@
+.wrapperBattlefield {
+  display: flex;
+  flex-direction: row;
+}
+
+.battlefield {
+  display: grid;
+  grid-template-columns: repeat(10, 40px);
+  grid-template-rows: repeat(10, 40px);
+  gap: 2px;
+}
+
+.cell {
+  width: 40px;
+  height: 40px;
+  background-color: #c9d9f1;
+  border: 1px solid #09003c;
+  border-radius: 4px;
+}
+
+.rowLetters {
+  display: flex;
+  flex-direction: row;
+  gap: 2px;
+  padding-bottom: 5px;
+}
+
+.columnNumbers {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  justify-content: center;
+  margin-top: 35px;
+}
+
+.lettersNumbers {
+  width: 40px;
+  height: 40px;
+  font-size: 20px;
+  border-radius: 4px;
+  color: #09003c;
+  justify-content: center;
+  display: flex;
+  align-items: flex-end;
+}
