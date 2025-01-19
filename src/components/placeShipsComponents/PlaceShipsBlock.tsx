@@ -4,11 +4,7 @@ import Ship from "./Ship";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
-export default function PlaceShipsBlock({
-  setArrOccupiedCells,
-}: {
-  setArrOccupiedCells: React.Dispatch<React.SetStateAction<string[]>>;
-}) {
+export default function PlaceShipsBlock() {
   const [selectedCell, setSelectedCell] = useState<string[]>([]); //для відображення кужи поставити корабель(підсвітка клітинок)
   const [selectedShip, setSelectedShip] = useState<{
     amount: number | null;
@@ -24,11 +20,11 @@ export default function PlaceShipsBlock({
     [key: string]: string;
   }>({});
 
-  // console.log("Occupied cells: ", occupiedCells);
+  //console.log("Occupied cells: ", occupiedCells);
 
   useEffect(() => {
-    setArrOccupiedCells(occupiedCells);
-  }, [occupiedCells, setArrOccupiedCells]);
+    localStorage.setItem("occupiedCells", JSON.stringify(occupiedCells));
+  }, [occupiedCells]);
 
   const mouseLeave = () => {
     setSelectedCell([]);

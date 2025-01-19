@@ -43,3 +43,11 @@
   display: flex;
   align-items: flex-end;
 }
+
+.occupiedCell {
+  width: 40px;
+  height: 40px;
+  background-color: #012f74;
+  border: 1px solid #09003c;
+  border-radius: 4px;
+}
