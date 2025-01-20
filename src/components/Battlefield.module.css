@@ -50,4 +50,57 @@
   background-color: #012f74;
   border: 1px solid #09003c;
   border-radius: 4px;
+  position: relative;
+}
+
+/* стилі для зруйнованих кораблів */
+.occupiedCellRuined {
+  width: 40px;
+  height: 40px;
+  background-color: #012f74;
+  border: 1px solid #09003c;
+  border-radius: 4px;
+  position: relative;
+}
+
+.occupiedCellRuined::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 80%;
+  height: 3px;
+  background-color: red;
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.occupiedCellRuined::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 80%;
+  height: 3px;
+  background-color: red;
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.cellMissed {
+  width: 40px;
+  height: 40px;
+  background-color: #c9d9f1;
+  border: 1px solid #09003c;
+  border-radius: 4px;
+  position: relative;
+}
+
+.cellMissed::after {
+  content: "";
+  position: absolute;
+  top: 25%;
+  left: 25%;
+  width: 50%;
+  height: 50%;
+  background-color: rgb(97, 96, 96);
+  border-radius: 50%;
 }
