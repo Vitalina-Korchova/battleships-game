@@ -54,7 +54,7 @@
 }
 
 /* стилі для зруйнованих кораблів */
-.occupiedCellRuined {
+.occupiedCellHitted {
   width: 40px;
   height: 40px;
   background-color: #012f74;
@@ -63,7 +63,7 @@
   position: relative;
 }
 
-.occupiedCellRuined::after {
+.occupiedCellHitted::after {
   content: "";
   position: absolute;
   top: 50%;
@@ -74,7 +74,7 @@
   transform: translate(-50%, -50%) rotate(45deg);
 }
 
-.occupiedCellRuined::before {
+.occupiedCellHitted::before {
   content: "";
   position: absolute;
   top: 50%;

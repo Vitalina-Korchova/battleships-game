@@ -24,8 +24,15 @@ export default function BattleShipsBoard() {
   );
   //розміщенні кораблі комп ютера
 
+  const [hittedCellsUser, setHittedCellsUser] = useState<string[]>([]); //масив для зруйнованих кораблів юзером
+  const [missedCellsUser, setMissedCellsUser] = useState<string[]>([]); //масив для пропущених кораблів юзером
+  const [hittedCellsComputer, setHittedCellsComputer] = useState<string[]>([]); //масив для зруйнованих кораблів комп'ютером
+  const [missedCellsComputer, setMissedCellsComputer] = useState<string[]>([]); //масив для пропущених кораблів комп'ютером
+
   // console.log("Occupied Cells Computer", occupiedCellsComputer);
   // console.log("Occupied Cells", arrOccupiedCells);
+  console.log("HittedCell", hittedCellsUser);
+  console.log("MissedCell", missedCellsUser);
 
   useEffect(() => {
     // ініціалізація збереженого масиву з локального сховища при завантаженні
@@ -155,12 +162,48 @@ export default function BattleShipsBoard() {
     );
   };
 
-  const gameProcess = () => {};
+  const clickCellUser = (e: React.DragEvent<HTMLDivElement>) => {
+    const cellId = e.currentTarget.id;
+    console.log(cellId);
+
+    if (
+      !hittedCellsUser.includes(cellId) &&
+      !missedCellsUser.includes(cellId)
+    ) {
+      if (occupiedCellsComputer.includes(cellId)) {
+        console.log("it is occupied");
+        setHittedCellsUser((prevCells) => [...prevCells, cellId]);
+      } else {
+        console.log("it is missed");
+        setMissedCellsUser((prevCells) => [...prevCells, cellId]);
+      }
+    }
+  };
+
+  const clickCellComputer = () => {
+    const randomNumber = Math.floor(Math.random() * 100) + 1;
+    const cellId = `cell-${randomNumber}`;
+    console.log(cellId);
+
+    if (
+      !hittedCellsComputer.includes(cellId) &&
+      !missedCellsComputer.includes(cellId)
+    ) {
+      if (arrOccupiedCells.includes(cellId)) {
+        console.log("it is occupied");
+        setHittedCellsComputer((prevCells) => [...prevCells, cellId]);
+      } else {
+        console.log("it is missed");
+        setMissedCellsComputer((prevCells) => [...prevCells, cellId]);
+      }
+    }
+  };
 
   const resetGame = () => {
     setOccupiedCellsComputer([]);
     localStorage.removeItem("occupiedCellsComputer");
   };
+
   return (
     <>
       <div className={styles.container}>
@@ -173,8 +216,17 @@ export default function BattleShipsBoard() {
           <span className={styles.text}>Рахунок знищених кораблів</span>
           <span className={styles.text}>0:0</span>
           <div className={styles.rowBattlfields}>
-            <Battlefield arrOccupiedCells={arrOccupiedCells} />
-            <Battlefield />
+            <Battlefield
+              arrOccupiedCells={arrOccupiedCells}
+              onClickCell={clickCellComputer}
+              hittedCells={hittedCellsComputer}
+              missedCells={missedCellsComputer}
+            />
+            <Battlefield
+              onClickCell={clickCellUser}
+              hittedCells={hittedCellsUser}
+              missedCells={missedCellsUser}
+            />
           </div>
         </div>
       </div>

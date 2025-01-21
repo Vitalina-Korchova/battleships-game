@@ -2,10 +2,16 @@ import styles from "./Battlefield.module.css";
 
 interface BattlefieldProps {
   arrOccupiedCells?: string[];
+  onClickCell?: (e: React.MouseEvent<HTMLDivElement>) => void;
+  hittedCells: string[];
+  missedCells: string[];
 }
 
 export default function Battlefield({
   arrOccupiedCells = [],
+  onClickCell,
+  hittedCells,
+  missedCells,
 }: BattlefieldProps) {
   const cells = Array.from({ length: 100 }, (_, i) => i + 1);
   const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -35,10 +41,15 @@ export default function Battlefield({
             {cells.map((cell) => (
               <div
                 key={cell}
+                onClick={(e) => onClickCell?.(e)}
                 id={`cell-${cell}`}
                 className={`${
                   arrOccupiedCells.includes(`cell-${cell}`)
                     ? styles.occupiedCell
+                    : hittedCells.includes(`cell-${cell}`)
+                    ? styles.occupiedCellHitted
+                    : missedCells.includes(`cell-${cell}`)
+                    ? styles.cellMissed
                     : styles.cell
                 }`}
               ></div>

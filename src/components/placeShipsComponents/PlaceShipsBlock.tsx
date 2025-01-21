@@ -48,7 +48,7 @@ export default function PlaceShipsBlock() {
 
   //підсвітка для розміщення корабля
   const mouseEnter = (e: React.DragEvent<HTMLDivElement>) => {
-    const cellId = e.target.id;
+    const cellId = e.currentTarget.id;
     const cellNumber = parseInt(cellId.split("-")[1], 10);
 
     // Функція перевірки сусідніх клітинок
