@@ -44,7 +44,8 @@ export default function Battlefield({
                 onClick={(e) => onClickCell?.(e)}
                 id={`cell-${cell}`}
                 className={`${
-                  arrOccupiedCells.includes(`cell-${cell}`)
+                  arrOccupiedCells.includes(`cell-${cell}`) &&
+                  !hittedCells.includes(`cell-${cell}`)
                     ? styles.occupiedCell
                     : hittedCells.includes(`cell-${cell}`)
                     ? styles.occupiedCellHitted

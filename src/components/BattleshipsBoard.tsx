@@ -31,8 +31,8 @@ export default function BattleShipsBoard() {
 
   // console.log("Occupied Cells Computer", occupiedCellsComputer);
   // console.log("Occupied Cells", arrOccupiedCells);
-  console.log("HittedCell", hittedCellsUser);
-  console.log("MissedCell", missedCellsUser);
+  console.log("HittedCell", hittedCellsComputer);
+  console.log("MissedCell", missedCellsComputer);
 
   useEffect(() => {
     // ініціалізація збереженого масиву з локального сховища при завантаженні
@@ -171,31 +171,65 @@ export default function BattleShipsBoard() {
       !missedCellsUser.includes(cellId)
     ) {
       if (occupiedCellsComputer.includes(cellId)) {
-        console.log("it is occupied");
+        console.log("it is occupied User");
         setHittedCellsUser((prevCells) => [...prevCells, cellId]);
       } else {
-        console.log("it is missed");
+        console.log("it is missed User");
         setMissedCellsUser((prevCells) => [...prevCells, cellId]);
       }
     }
   };
 
-  const clickCellComputer = () => {
-    const randomNumber = Math.floor(Math.random() * 100) + 1;
-    const cellId = `cell-${randomNumber}`;
-    console.log(cellId);
+  const [wasHitted, setWasHitted] = useState(true); //встановлення стану корабля як влученого
+  const [hittedCellId, setHittedCellId] = useState<string>(""); //запам'ятовуємо клітинку яка була поцілена
 
-    if (
-      !hittedCellsComputer.includes(cellId) &&
-      !missedCellsComputer.includes(cellId)
-    ) {
-      if (arrOccupiedCells.includes(cellId)) {
-        console.log("it is occupied");
-        setHittedCellsComputer((prevCells) => [...prevCells, cellId]);
-      } else {
-        console.log("it is missed");
-        setMissedCellsComputer((prevCells) => [...prevCells, cellId]);
+  const clickCellComputer = () => {
+    let randomNumber;
+    let cellId: string = "";
+
+    if (!wasHitted) {
+      const hittedNumber = parseInt(hittedCellId.split("-")[1], 10);
+      const possibleMoves = [
+        hittedNumber - 10, // Вгору
+        hittedNumber + 10, // Вниз
+        hittedNumber - 1, // Вліво
+        hittedNumber + 1, // Вправо
+      ];
+
+      for (const move of possibleMoves) {
+        cellId = `cell-${move}`;
+        if (
+          move > 0 &&
+          move <= BOARD_SIZE * BOARD_SIZE &&
+          !hittedCellsComputer.includes(cellId) &&
+          !missedCellsComputer.includes(cellId)
+        ) {
+          break;
+        }
       }
+    }
+
+    //рандом клітинка
+    if (!cellId) {
+      do {
+        randomNumber = Math.floor(Math.random() * 100) + 1;
+        cellId = `cell-${randomNumber}`;
+      } while (
+        hittedCellsComputer.includes(cellId) ||
+        missedCellsComputer.includes(cellId)
+      );
+    }
+
+    //перевірка чи не є згенерована клітинка у масиває вже
+    if (arrOccupiedCells.includes(cellId)) {
+      console.log("it is occupied Computer");
+      setHittedCellsComputer((prevCells) => [...prevCells, cellId]);
+      setWasHitted(false);
+      setHittedCellId(cellId);
+    } else {
+      console.log("it is missed Computer");
+      setMissedCellsComputer((prevCells) => [...prevCells, cellId]);
+      setWasHitted(true);
     }
   };
 
