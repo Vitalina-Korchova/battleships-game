@@ -21,18 +21,28 @@ export default function BattleShipsBoard() {
   const [arrOccupiedCells, setArrOccupiedCells] = useState<string[]>([]);
   const [occupiedCellsComputer, setOccupiedCellsComputer] = useState<string[]>(
     []
-  );
-  //розміщенні кораблі комп ютера
+  ); //розміщенні кораблі комп ютера
 
+  //клітинки
   const [hittedCellsUser, setHittedCellsUser] = useState<string[]>([]); //масив для зруйнованих кораблів юзером
   const [missedCellsUser, setMissedCellsUser] = useState<string[]>([]); //масив для пропущених кораблів юзером
   const [hittedCellsComputer, setHittedCellsComputer] = useState<string[]>([]); //масив для зруйнованих кораблів комп'ютером
   const [missedCellsComputer, setMissedCellsComputer] = useState<string[]>([]); //масив для пропущених кораблів комп'ютером
 
+  //кораблі
+  const [arrShipsUser, setArrShipsUser] = useState<
+    { id: string; cells: string[] }[]
+  >([]); //кораблі юзера
+  const [arrShipsComputer, setArrShipsComputer] = useState<
+    { id: string; cells: string[] }[]
+  >([]); //кораблі комп ютера
+
+  // console.log("Ships user:", arrShipsUser);
+  // console.log("Ships computer:", arrShipsComputer);
   // console.log("Occupied Cells Computer", occupiedCellsComputer);
   // console.log("Occupied Cells", arrOccupiedCells);
-  console.log("HittedCell", hittedCellsComputer);
-  console.log("MissedCell", missedCellsComputer);
+  // console.log("HittedCell", hittedCellsComputer);
+  // console.log("MissedCell", missedCellsComputer);
 
   useEffect(() => {
     // ініціалізація збереженого масиву з локального сховища при завантаженні
@@ -61,6 +71,14 @@ export default function BattleShipsBoard() {
       });
     };
   }, []);
+
+  useEffect(() => {
+    const detectedShipsUser = detectShips(arrOccupiedCells);
+    setArrShipsUser(detectedShipsUser);
+
+    const detectedShipsComputer = detectShips(occupiedCellsComputer);
+    setArrShipsComputer(detectedShipsComputer);
+  }, [arrOccupiedCells, occupiedCellsComputer]);
 
   //рандом розміщення кораблів комп ютера
   const placeShipsComputer = (arrShips: Ship[]): void => {
@@ -122,7 +140,7 @@ export default function BattleShipsBoard() {
             let cellNumber: number;
             if (isHorizontal) {
               cellNumber = startCell + j; // Рух горизонтально
-              // gеревіряємо, чи виходить за межі правого боку поля
+              // перевіряємо, чи виходить за межі правого боку поля
               if (
                 Math.floor((startCell - 1) / BOARD_SIZE) !==
                 Math.floor((cellNumber - 1) / BOARD_SIZE)
@@ -160,6 +178,135 @@ export default function BattleShipsBoard() {
       "occupiedCellsComputer",
       JSON.stringify(newOccupiedCells)
     );
+  };
+
+  //виявити корабель з клітинок
+  const detectShips = (arrCells: string[]) => {
+    const ships: { id: string; cells: string[] }[] = [];
+    let Counter1CellsShip: number = 0;
+    let Counter2CellsShip: number = 0;
+    let Counter3CellsShip: number = 0;
+    let Counter4CellsShip: number = 0;
+    let consecutiveCells: number = 1;
+    let currentShipCells: string[] = [];
+    const shipsVerticalCells: string[] = [];
+
+    const getCellNumber = (cell: string) => parseInt(cell.split("-")[1]);
+
+    const isConsecutiveCells = (cell1: string, cell2: string) => {
+      const num1 = getCellNumber(cell1);
+      const num2 = getCellNumber(cell2);
+
+      const horizontalCheck = Math.abs(num1 - num2) === 1;
+      const verticalCheck = Math.abs(num1 - num2) === 10;
+
+      return horizontalCheck || verticalCheck;
+    };
+
+    arrCells.forEach((cell, index) => {
+      const nextCell = arrCells[index + 1];
+
+      currentShipCells.push(cell);
+
+      if (nextCell && isConsecutiveCells(cell, nextCell)) {
+        consecutiveCells++;
+      } else {
+        if (consecutiveCells === 4) {
+          Counter4CellsShip++;
+          ships.push({
+            id: `ship-4-${Counter4CellsShip}`,
+            cells: [...currentShipCells],
+          });
+        } else if (consecutiveCells === 3) {
+          Counter3CellsShip++;
+          ships.push({
+            id: `ship-3-${Counter3CellsShip}`,
+            cells: [...currentShipCells],
+          });
+        } else if (consecutiveCells === 2) {
+          Counter2CellsShip++;
+          ships.push({
+            id: `ship-2-${Counter2CellsShip}`,
+            cells: [...currentShipCells],
+          });
+        } else if (consecutiveCells === 1) {
+          shipsVerticalCells.push(...currentShipCells);
+        }
+
+        consecutiveCells = 1;
+        currentShipCells = [];
+      }
+    });
+
+    // Перевірка останньої групи клітин
+    if (consecutiveCells === 4) {
+      Counter4CellsShip++;
+      ships.push({
+        id: `ship-4-${Counter4CellsShip}`,
+        cells: [...currentShipCells],
+      });
+    } else if (consecutiveCells === 3) {
+      Counter3CellsShip++;
+      ships.push({
+        id: `ship-3-${Counter3CellsShip}`,
+        cells: [...currentShipCells],
+      });
+    } else if (consecutiveCells === 2) {
+      Counter2CellsShip++;
+      ships.push({
+        id: `ship-2-${Counter2CellsShip}`,
+        cells: [...currentShipCells],
+      });
+    } else if (consecutiveCells === 1) {
+      shipsVerticalCells.push(...currentShipCells);
+    }
+
+    // Додаткова перевірка вертикальних кораблів
+    if (shipsVerticalCells.length > 0) {
+      shipsVerticalCells.forEach((cell, index) => {
+        const nextCell = shipsVerticalCells[index + 1];
+
+        if (nextCell && isConsecutiveCells(cell, nextCell)) {
+          currentShipCells.push(cell);
+
+          if (currentShipCells.length === 4) {
+            Counter4CellsShip++;
+            ships.push({
+              id: `ship-4-${Counter4CellsShip}`,
+              cells: [...currentShipCells],
+            });
+          } else if (currentShipCells.length === 3) {
+            Counter3CellsShip++;
+            ships.push({
+              id: `ship-3-${Counter3CellsShip}`,
+              cells: [...currentShipCells],
+            });
+          } else if (currentShipCells.length === 2) {
+            Counter2CellsShip++;
+            ships.push({
+              id: `ship-2-${Counter2CellsShip}`,
+              cells: [...currentShipCells],
+            });
+          }
+        } else {
+          currentShipCells = [cell];
+        }
+      });
+    }
+
+    const singleCells = shipsVerticalCells.filter(
+      (cell) => !ships.some((ship) => ship.cells.includes(cell))
+    );
+
+    singleCells.forEach((cell) => {
+      Counter1CellsShip++;
+      ships.push({
+        id: `ship-1-${Counter1CellsShip}`,
+        cells: [cell],
+      });
+    });
+
+    return ships;
   };
 
   const clickCellUser = (e: React.DragEvent<HTMLDivElement>) => {
@@ -229,7 +376,7 @@ export default function BattleShipsBoard() {
     } else {
       console.log("it is missed Computer");
       setMissedCellsComputer((prevCells) => [...prevCells, cellId]);
-      setWasHitted(true);
+      // setWasHitted(true);
     }
   };
 
