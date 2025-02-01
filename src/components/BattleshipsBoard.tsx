@@ -355,6 +355,8 @@ export default function BattleShipsBoard() {
 
   const [wasHitted, setWasHitted] = useState(false); //встановлення стану корабля як влученого
   const [hittedCellId, setHittedCellId] = useState<string>(""); //запам'ятовуємо клітинку яка була поцілена
+  const [unnecessaryCells, setUnnecessaryCells] = useState<string[]>([]); //клітинки навколо знищеного корабля, які не треба перевіряти
+  console.log(unnecessaryCells);
 
   //хід комп ютера по полю юзера
   const clickCellComputer = () => {
@@ -385,7 +387,8 @@ export default function BattleShipsBoard() {
             move > 0 &&
             move <= BOARD_SIZE * BOARD_SIZE &&
             !hittedCellsComputer.includes(cellId) &&
-            !missedCellsComputer.includes(cellId)
+            !missedCellsComputer.includes(cellId) &&
+            !unnecessaryCells.includes(cellId)
           ) {
             break;
           }
@@ -399,7 +402,8 @@ export default function BattleShipsBoard() {
           cellId = `cell-${randomNumber}`;
         } while (
           hittedCellsComputer.includes(cellId) ||
-          missedCellsComputer.includes(cellId)
+          missedCellsComputer.includes(cellId) ||
+          unnecessaryCells.includes(cellId)
         );
       }
 
@@ -423,6 +427,33 @@ export default function BattleShipsBoard() {
 
             if (allCellsHitted) {
               setPointComputer((prevPoints) => prevPoints + 0.5); //БАГ через асинхронее оновлення стану реакт функція використовується два рази, якщо поставити + 1 , буде додаватись два очка, того поставила 0.5
+
+              // Визначаємо клітинки навколо знищеного корабля
+              shipHit.cells.forEach((cell) => {
+                const cellNumber = parseInt(cell.split("-")[1], 10);
+                const surroundingCells = [
+                  `cell-${cellNumber - 11}`,
+                  `cell-${cellNumber - 10}`,
+                  `cell-${cellNumber - 9}`,
+                  `cell-${cellNumber - 1}`,
+                  `cell-${cellNumber + 1}`,
+                  `cell-${cellNumber + 9}`,
+                  `cell-${cellNumber + 10}`,
+                  `cell-${cellNumber + 11}`,
+                ];
+
+                setUnnecessaryCells((prevUnnecessaryCells) => [
+                  ...prevUnnecessaryCells,
+                  ...surroundingCells.filter(
+                    (surroundingCell) =>
+                      parseInt(surroundingCell.split("-")[1], 10) > 0 &&
+                      parseInt(surroundingCell.split("-")[1], 10) <=
+                        BOARD_SIZE * BOARD_SIZE &&
+                      !prevUnnecessaryCells.includes(surroundingCell)
+                  ),
+                ]);
+              });
+
               setWasHitted(false);
             } else {
               setWasHitted(true);
