@@ -1,0 +1,18 @@
+.container {
+  position: fixed;
+  margin: auto;
+  background-color: rgb(237, 235, 235);
+  width: 500px;
+  height: 300px;
+  border-radius: 20px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+  border: 2px solid rgb(215, 215, 215);
+}
+
+.innerContainer {
+  position: relative;
+  display: flex;
+  padding: 20px;
+  flex-direction: column;
+  gap: 3px;
+}

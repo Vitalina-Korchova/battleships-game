@@ -2,6 +2,7 @@ import styles from "./BattleShipsBoard.module.css";
 import Battlefield from "./Battlefield";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
+import PopUp from "./PopUp";
 
 interface Ship {
   size: number;
@@ -43,6 +44,9 @@ export default function BattleShipsBoard() {
 
   //черга
   const [playerTurn, setPlayerTurn] = useState(true);
+
+  //відкриття попапу(Перемога або невдача)
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   useEffect(() => {
     // ініціалізація збереженого масиву з локального сховища при завантаженні
@@ -311,37 +315,40 @@ export default function BattleShipsBoard() {
 
   //хід юзера по полю компа
   const clickCellUser = (e: React.DragEvent<HTMLDivElement>) => {
-    const cellId = e.currentTarget.id;
-    // console.log(cellId);
+    if (playerTurn) {
+      const cellId = e.currentTarget.id;
+      // console.log(cellId);
 
-    if (
-      !hittedCellsUser.includes(cellId) &&
-      !missedCellsUser.includes(cellId)
-    ) {
-      if (occupiedCellsComputer.includes(cellId)) {
-        // console.log("it is occupied User");
+      if (
+        !hittedCellsUser.includes(cellId) &&
+        !missedCellsUser.includes(cellId)
+      ) {
+        if (occupiedCellsComputer.includes(cellId)) {
+          // console.log("it is occupied User");
 
-        setHittedCellsUser((prevCells) => {
-          const updatedCells = [...prevCells, cellId];
+          setHittedCellsUser((prevCells) => {
+            const updatedCells = [...prevCells, cellId];
 
-          const shipHit = arrShipsComputer.find((ship) =>
-            ship.cells.includes(cellId)
-          );
-
-          if (shipHit) {
-            const allCellsHitted = shipHit.cells.every((cell) =>
-              updatedCells.includes(cell)
+            const shipHit = arrShipsComputer.find((ship) =>
+              ship.cells.includes(cellId)
             );
 
-            if (allCellsHitted) {
-              setPointUser((prevPoints) => prevPoints + 0.5); //БАГ через асинхронее оновлення стану реакт функція використовується два рази, якщо поставити + 1 , буде додаватись два очка, того поставила 0.5
+            if (shipHit) {
+              const allCellsHitted = shipHit.cells.every((cell) =>
+                updatedCells.includes(cell)
+              );
+
+              if (allCellsHitted) {
+                setPointUser((prevPoints) => prevPoints + 0.5); //БАГ через асинхронее оновлення стану реакт функція використовується два рази, якщо поставити + 1 , буде додаватись два очка, того поставила 0.5
+              }
             }
-          }
-          return updatedCells;
-        });
-      } else {
-        // console.log("it is missed User");
-        setMissedCellsUser((prevCells) => [...prevCells, cellId]);
+            return updatedCells;
+          });
+        } else {
+          // console.log("it is missed User");
+          setMissedCellsUser((prevCells) => [...prevCells, cellId]);
+          setPlayerTurn(false);
+        }
       }
     }
   };
@@ -399,7 +406,7 @@ export default function BattleShipsBoard() {
       //перевірка чи не є згенерована клітинка у масиває вже
       if (arrOccupiedCells.includes(cellId)) {
         // console.log("it is occupied Computer");
-
+        setPlayerTurn(false);
         setHittedCellsComputer((prevCells) => {
           const updatedCells = [...prevCells, cellId];
 
@@ -428,6 +435,7 @@ export default function BattleShipsBoard() {
       } else {
         // console.log("it is missed Computer");
         setMissedCellsComputer((prevCells) => [...prevCells, cellId]);
+        setPlayerTurn(true);
       }
     }, 1000);
   };
@@ -436,6 +444,8 @@ export default function BattleShipsBoard() {
     setOccupiedCellsComputer([]);
     localStorage.removeItem("occupiedCellsComputer");
   };
+
+  const openPopup = () => setIsPopupOpen(true);
 
   return (
     <>
@@ -450,12 +460,18 @@ export default function BattleShipsBoard() {
           <span className={styles.text}>
             {pointUser}:{pointComputer}
           </span>
+
+          <button onClick={openPopup}>Open Pop up</button>
           <div className={styles.rowBattlfields}>
+            {/* поле юзера, по якому ходить комп */}
             <Battlefield
+              playerTurnState={playerTurn}
+              onClickCellAuto={clickCellComputer}
               arrOccupiedCells={arrOccupiedCells}
               hittedCells={hittedCellsComputer}
               missedCells={missedCellsComputer}
             />
+            {/* поле компа, по якому ходить юзер */}
             <Battlefield
               onClickCell={clickCellUser}
               hittedCells={hittedCellsUser}
@@ -464,6 +480,7 @@ export default function BattleShipsBoard() {
           </div>
         </div>
       </div>
+      {isPopupOpen && <PopUp />}
     </>
   );
 }

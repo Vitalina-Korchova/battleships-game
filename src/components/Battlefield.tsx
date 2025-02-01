@@ -1,14 +1,19 @@
+import { useEffect } from "react";
 import styles from "./Battlefield.module.css";
 
 interface BattlefieldProps {
   arrOccupiedCells?: string[];
   onClickCell?: (e: React.MouseEvent<HTMLDivElement>) => void;
+  onClickCellAuto?: () => void;
   hittedCells: string[];
   missedCells: string[];
+  playerTurnState?: boolean;
 }
 
 export default function Battlefield({
   arrOccupiedCells = [],
+  onClickCellAuto,
+  playerTurnState,
   onClickCell,
   hittedCells,
   missedCells,
@@ -16,6 +21,12 @@ export default function Battlefield({
   const cells = Array.from({ length: 100 }, (_, i) => i + 1);
   const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
+
+  useEffect(() => {
+    if (!playerTurnState && onClickCellAuto) {
+      onClickCellAuto();
+    }
+  }, [playerTurnState, onClickCellAuto]);
 
   return (
     <>
