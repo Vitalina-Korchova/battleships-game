@@ -1,12 +1,16 @@
 .container {
   position: fixed;
-  margin: auto;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
   background-color: rgb(237, 235, 235);
   width: 500px;
-  height: 300px;
+  height: 320px;
   border-radius: 20px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
   border: 2px solid rgb(215, 215, 215);
+  z-index: 10;
+  animation: popupShow 0.7s ease-out forwards;
 }
 
 .innerContainer {
@@ -15,4 +19,81 @@
   padding: 20px;
   flex-direction: column;
   gap: 3px;
+}
+
+.img {
+  display: flex;
+  margin: auto;
+
+  align-items: center;
+  width: 130px;
+  height: 130px;
+  padding-bottom: 20px;
+}
+
+.textVictory {
+  color: blue;
+  margin: auto;
+  letter-spacing: 0.0015em;
+  font-size: 4em;
+  text-shadow: 0 1px #8da1ff, -1px 0 #c0cbff, -1px 2px #8da1ff, -2px 1px #c0cbff,
+    -2px 3px #8da1ff, -3px 2px #c0cbff, -3px 4px #8da1ff, -4px 3px #c0cbff,
+    -4px 5px #8da1ff, -5px 4px #c0cbff, -5px 6px #8da1ff, -6px 5px #c0cbff,
+    -6px 7px #8da1ff, -7px 6px #c0cbff, -7px 8px #8da1ff, -8px 7px #c0cbff;
+  text-align: center;
+}
+
+.textDefeat {
+  color: red;
+  margin: auto;
+  letter-spacing: 0.0015em;
+  font-size: 4em;
+  text-shadow: 0 1px #ffa68d, -1px 0 #ffcfc0, -1px 2px #ffa68d, -2px 1px #ffcfc0,
+    -2px 3px #ffa68d, -3px 2px #ffcfc0, -3px 4px #ffa68d, -4px 3px #ffcfc0,
+    -4px 5px #ffa68d, -5px 4px #ffcfc0, -5px 6px #ffa68d, -6px 5px #ffcfc0,
+    -6px 7px #ffa68d, -7px 6px #ffcfc0, -7px 8px #ffa68d, -8px 7px #ffcfc0;
+  text-align: center;
+  padding-bottom: 10px;
+}
+
+.btnEnd {
+  display: flex;
+  margin: auto;
+  padding: 10px 15px;
+  text-align: center;
+  text-transform: uppercase;
+  transition: 0.5s;
+  background-size: 200% auto;
+  color: white;
+  border-radius: 10px;
+  display: flex;
+  border: 0px;
+  font-size: 15px;
+  font-weight: 700;
+  box-shadow: 0px 0px 14px -7px #0502ce;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.btnEnd:hover {
+  background-position: right center;
+  color: #fff;
+  text-decoration: none;
+}
+
+.btnEnd:active {
+  transform: scale(0.95);
+}
+
+@keyframes popupShow {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) scale(0.5);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+  }
 }

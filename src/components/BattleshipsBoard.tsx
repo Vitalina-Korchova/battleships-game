@@ -48,6 +48,9 @@ export default function BattleShipsBoard() {
   //відкриття попапу(Перемога або невдача)
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
+  //результа гри
+  const [result, setResult] = useState(false);
+
   useEffect(() => {
     // ініціалізація збереженого масиву з локального сховища при завантаженні
     const savedOccupiedCells = localStorage.getItem("occupiedCells");
@@ -83,6 +86,18 @@ export default function BattleShipsBoard() {
     const detectedShipsComputer = detectShips(occupiedCellsComputer);
     setArrShipsComputer(detectedShipsComputer);
   }, [arrOccupiedCells, occupiedCellsComputer]);
+
+  useEffect(() => {
+    if (pointUser === 10 || pointComputer === 10) {
+      setIsPopupOpen(true);
+    }
+    if (pointUser === 10) {
+      setResult(true);
+    }
+    if (pointComputer === 10) {
+      setResult(false);
+    }
+  }, [pointUser, pointComputer]);
 
   //рандом розміщення кораблів комп ютера
   const placeShipsComputer = (arrShips: Ship[]): void => {
@@ -396,7 +411,7 @@ export default function BattleShipsBoard() {
       }
 
       //рандом клітинка
-      if (!cellId) {
+      if (!cellId && pointComputer !== 10) {
         do {
           randomNumber = Math.floor(Math.random() * 100) + 1;
           cellId = `cell-${randomNumber}`;
@@ -476,8 +491,6 @@ export default function BattleShipsBoard() {
     localStorage.removeItem("occupiedCellsComputer");
   };
 
-  const openPopup = () => setIsPopupOpen(true);
-
   return (
     <>
       <div className={styles.container}>
@@ -492,7 +505,6 @@ export default function BattleShipsBoard() {
             {pointUser}:{pointComputer}
           </span>
 
-          <button onClick={openPopup}>Open Pop up</button>
           <div className={styles.rowBattlfields}>
             {/* поле юзера, по якому ходить комп */}
             <Battlefield
@@ -511,7 +523,8 @@ export default function BattleShipsBoard() {
           </div>
         </div>
       </div>
-      {isPopupOpen && <PopUp />}
+      {isPopupOpen && <PopUp result={result} />}
+      {isPopupOpen && <div className={styles.overlay}></div>}
     </>
   );
 }
