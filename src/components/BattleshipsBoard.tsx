@@ -370,7 +370,7 @@ export default function BattleShipsBoard() {
               );
 
               if (allCellsHitted) {
-                setPointUser((prevPoints) => prevPoints + 0.5); //БАГ через асинхронее оновлення стану реакт функція використовується два рази, якщо поставити + 1 , буде додаватись два очка, того поставила 0.5
+                setPointUser((prevPoints) => prevPoints + 1);
               }
             }
             return updatedCells;
@@ -456,7 +456,7 @@ export default function BattleShipsBoard() {
             );
 
             if (allCellsHitted) {
-              setPointComputer((prevPoints) => prevPoints + 0.5); //БАГ через асинхронее оновлення стану реакт функція використовується два рази, якщо поставити + 1 , буде додаватись два очка, того поставила 0.5
+              setPointComputer((prevPoints) => prevPoints + 1);
 
               // Визначаємо клітинки навколо знищеного корабля
               shipHit.cells.forEach((cell) => {
