@@ -510,7 +510,7 @@ export default function BattleShipsBoard() {
     <>
       <div className={styles.container}>
         <div className={styles.innerContainer}>
-          <Link to="/" style={{ textDecoration: "none" }}>
+          <Link to="/battleships-game" style={{ textDecoration: "none" }}>
             <button onClick={resetGame} className={styles.btnReturnStart}>
               Повернутись на початок
             </button>

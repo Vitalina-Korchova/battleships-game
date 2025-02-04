@@ -9,8 +9,8 @@ export default function App() {
   useEffect(() => {
     const handleBackButton = () => {
       // якщо користувач натискає кнопку назад, перенаправляємо на головну сторінку
-      if (window.location.pathname !== "/") {
-        window.location.href = "/";
+      if (window.location.pathname !== "/battleships-game") {
+        window.location.href = "/battleships-game";
       }
     };
 
@@ -25,9 +25,15 @@ export default function App() {
       <Router>
         <div className="containerApp">
           <Routes>
-            <Route path="/" element={<IntroBlock />} />
-            <Route path="/place_ships" element={<PlaceShipsBlock />} />
-            <Route path="/battle" element={<BattleShipsBoard />} />
+            <Route path="/battleships-game" element={<IntroBlock />} />
+            <Route
+              path="/battleships-game/place_ships"
+              element={<PlaceShipsBlock />}
+            />
+            <Route
+              path="/battleships-game/battle"
+              element={<BattleShipsBoard />}
+            />
           </Routes>
         </div>
       </Router>

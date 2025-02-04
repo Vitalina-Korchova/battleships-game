@@ -214,7 +214,10 @@ export default function PlaceShipsBlock() {
       <div className={styles.container}>
         <div className={styles.innerContainer}>
           <span className={styles.textPlaceShips}>Розташуйте кораблі 🌊</span>
-          <Link to="/battle" style={{ textDecoration: "none" }}>
+          <Link
+            to="/battleships-game/battle"
+            style={{ textDecoration: "none" }}
+          >
             <button
               disabled={occupiedCells.length !== 20}
               className={styles.buttonStart}

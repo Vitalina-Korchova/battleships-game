@@ -6,7 +6,10 @@ export default function IntroBlock() {
     <>
       <div className={styles.introBlock}>
         <span className={styles.nameGame}>Морський бій</span>
-        <Link to="/place_ships" style={{ textDecoration: "none" }}>
+        <Link
+          to="/battleships-game/place_ships"
+          style={{ textDecoration: "none" }}
+        >
           <button type="button" className={styles.buttonStart}>
             Почати гру
           </button>

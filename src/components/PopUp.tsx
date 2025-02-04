@@ -21,7 +21,7 @@ export default function PopUp({ result }: { result: boolean }) {
           {!result && (
             <img className={styles.img} src="./icon-defeat.png" alt="defeat" />
           )}
-          <Link to="/" style={{ textDecoration: "none" }}>
+          <Link to="/battleships-game" style={{ textDecoration: "none" }}>
             <button
               className={styles.btnEnd}
               style={{
