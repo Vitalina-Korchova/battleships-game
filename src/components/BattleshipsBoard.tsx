@@ -521,7 +521,7 @@ export default function BattleShipsBoard() {
           </span>
 
           <div className={styles.rowBattlfields}>
-            {/* поле юзера, по якому ходить комп */}
+            {/* поле юзера, по якому ходить комп'ютер */}
             <Battlefield
               playerTurnState={playerTurn}
               onClickCellAuto={clickCellComputer}

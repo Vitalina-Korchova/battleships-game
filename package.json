@@ -1,5 +1,6 @@
 {
   "name": "react-game",
+  "homepage": "https://vitalina-korchova.github.io/battleships-game/",
   "private": true,
   "version": "0.0.0",
   "type": "module",
