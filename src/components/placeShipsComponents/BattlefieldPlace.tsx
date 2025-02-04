@@ -1,12 +1,20 @@
 import styles from "./BattlefieldPlace.module.css";
 
+interface BattlefieldPlaceShipsProps {
+  onMouseEnter: (e: React.DragEvent<HTMLDivElement>) => void;
+  onMouseLeave: () => void;
+  selectedCell: string[];
+  onClickCell: () => void;
+  occupiedCells: string[];
+}
+
 export default function Battlefield({
   onMouseEnter,
   onMouseLeave,
   selectedCell,
   onClickCell,
   occupiedCells,
-}) {
+}: BattlefieldPlaceShipsProps) {
   const cells = Array.from({ length: 100 }, (_, i) => i + 1);
   const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];

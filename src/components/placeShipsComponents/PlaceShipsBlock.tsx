@@ -40,10 +40,10 @@ export default function PlaceShipsBlock() {
         [id]: "vertical",
       }));
     }
-    console.log(`Was click the ship ${amount} with id ${id} direction `);
-    console.log(
-      `Direction for ship ${id}: ${shipDirections[id] || "vertical"}`
-    );
+    // console.log(`Was click the ship ${amount} with id ${id} direction `);
+    // console.log(
+    //   `Direction for ship ${id}: ${shipDirections[id] || "vertical"}`
+    // );
   };
 
   //підсвітка для розміщення корабля

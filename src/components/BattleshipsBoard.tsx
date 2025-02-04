@@ -345,7 +345,7 @@ export default function BattleShipsBoard() {
   };
 
   //хід юзера по полю компа
-  const clickCellUser = (e: React.DragEvent<HTMLDivElement>) => {
+  const clickCellUser = (e: React.MouseEvent<HTMLDivElement>) => {
     if (playerTurn) {
       const cellId = e.currentTarget.id;
       // console.log(cellId);
