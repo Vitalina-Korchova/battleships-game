@@ -51,14 +51,15 @@ export default function BattleShipsBoard() {
   //результа гри
   const [result, setResult] = useState(false);
 
+  //отримання даних з локал сторадж
   useEffect(() => {
-    // ініціалізація збереженого масиву з локального сховища при завантаженні
+    // отримання зайнятих клітинок юзера
     const savedOccupiedCells = localStorage.getItem("occupiedCells");
     if (savedOccupiedCells) {
       setArrOccupiedCells(JSON.parse(savedOccupiedCells));
     }
 
-    //отримуємо масив знерованих зайнятих клітинок
+    //отримуємо масив згерованих зайнятих клітинок комп'ютера
     const savedCellsComputer = localStorage.getItem("occupiedCellsComputer");
     if (savedCellsComputer) {
       setOccupiedCellsComputer(JSON.parse(savedCellsComputer));
@@ -79,6 +80,7 @@ export default function BattleShipsBoard() {
     };
   }, []);
 
+  //формування кораблів з зайнтиях клітинок
   useEffect(() => {
     const detectedShipsUser = detectShips(arrOccupiedCells);
     setArrShipsUser(detectedShipsUser);
@@ -87,6 +89,7 @@ export default function BattleShipsBoard() {
     setArrShipsComputer(detectedShipsComputer);
   }, [arrOccupiedCells, occupiedCellsComputer]);
 
+  //вікдриття попапу
   useEffect(() => {
     if (pointUser === 10 || pointComputer === 10) {
       setIsPopupOpen(true);
@@ -98,6 +101,19 @@ export default function BattleShipsBoard() {
       setResult(false);
     }
   }, [pointUser, pointComputer]);
+
+  //оновлення сторінки і попередження
+  useEffect(() => {
+    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+      event.preventDefault();
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
 
   //рандом розміщення кораблів комп ютера
   const placeShipsComputer = (arrShips: Ship[]): void => {
@@ -371,7 +387,6 @@ export default function BattleShipsBoard() {
   const [wasHitted, setWasHitted] = useState(false); //встановлення стану корабля як влученого
   const [hittedCellId, setHittedCellId] = useState<string>(""); //запам'ятовуємо клітинку яка була поцілена
   const [unnecessaryCells, setUnnecessaryCells] = useState<string[]>([]); //клітинки навколо знищеного корабля, які не треба перевіряти
-  console.log(unnecessaryCells);
 
   //хід комп ютера по полю юзера
   const clickCellComputer = () => {
