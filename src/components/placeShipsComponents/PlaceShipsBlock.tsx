@@ -334,7 +334,7 @@ export default function PlaceShipsBlock() {
               Скинути розміщення
             </button>
             <button onClick={handleRotateShip} className={styles.buttonRotate}>
-              🗘
+              Повернути
             </button>
           </div>
         </div>

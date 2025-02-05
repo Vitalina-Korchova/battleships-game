@@ -344,6 +344,56 @@ export default function BattleShipsBoard() {
     return ships;
   };
 
+  // Визначаємо клітинки навколо знищеного корабля
+  const getSurroundingCells = (
+    shipHit: { id: string; cells: string[] }, // Корабель, по якому влучили
+    setSurroundingCells: React.Dispatch<React.SetStateAction<string[]>>,
+    BOARD_SIZE: number
+  ) => {
+    shipHit.cells.forEach((cell) => {
+      const cellNumber = parseInt(cell.split("-")[1], 10);
+      const isLeftEdge = cellNumber % BOARD_SIZE === 1; // Перевірка, чи є клітинка на лівому краю
+      const isRightEdge = cellNumber % BOARD_SIZE === 0; // Перевірка, чи є клітинка на правому краю
+
+      // Список навколишніх клітинок з урахуванням країв
+      const surroundingCells = [
+        !isLeftEdge ? `cell-${cellNumber - 1}` : null, // Вліво
+        !isRightEdge ? `cell-${cellNumber + 1}` : null, // Вправо
+        cellNumber - BOARD_SIZE > 0 ? `cell-${cellNumber - BOARD_SIZE}` : null, // Вгору
+        cellNumber + BOARD_SIZE <= BOARD_SIZE * BOARD_SIZE
+          ? `cell-${cellNumber + BOARD_SIZE}`
+          : null, // Вниз
+        !isLeftEdge && cellNumber - BOARD_SIZE > 0
+          ? `cell-${cellNumber - BOARD_SIZE - 1}`
+          : null, // Вліво вгору
+        !isRightEdge && cellNumber - BOARD_SIZE > 0
+          ? `cell-${cellNumber - BOARD_SIZE + 1}`
+          : null, // Вправо вгору
+        !isLeftEdge && cellNumber + BOARD_SIZE <= BOARD_SIZE * BOARD_SIZE
+          ? `cell-${cellNumber + BOARD_SIZE - 1}`
+          : null, // Вліво вниз
+        !isRightEdge && cellNumber + BOARD_SIZE <= BOARD_SIZE * BOARD_SIZE
+          ? `cell-${cellNumber + BOARD_SIZE + 1}`
+          : null, // Вправо вниз
+      ].filter((cell): cell is string => cell !== null); // фільтрація null
+
+      setSurroundingCells((prevUnnecessaryCells) => [
+        ...prevUnnecessaryCells,
+        ...surroundingCells.filter(
+          (surroundingCell) =>
+            parseInt(surroundingCell.split("-")[1], 10) > 0 &&
+            parseInt(surroundingCell.split("-")[1], 10) <=
+              BOARD_SIZE * BOARD_SIZE &&
+            !prevUnnecessaryCells.includes(surroundingCell)
+        ),
+      ]);
+    });
+  };
+
+  const [surroundingCellsUser, setSurroundingCellsUser] = useState<string[]>(
+    []
+  ); //клітинки навколо знищеного корабля, які не треба перевіряти для юзера
+
   //хід юзера по полю компа
   const clickCellUser = (e: React.MouseEvent<HTMLDivElement>) => {
     if (playerTurn) {
@@ -352,7 +402,8 @@ export default function BattleShipsBoard() {
 
       if (
         !hittedCellsUser.includes(cellId) &&
-        !missedCellsUser.includes(cellId)
+        !missedCellsUser.includes(cellId) &&
+        !surroundingCellsUser.includes(cellId)
       ) {
         if (occupiedCellsComputer.includes(cellId)) {
           // console.log("it is occupied User");
@@ -371,6 +422,11 @@ export default function BattleShipsBoard() {
 
               if (allCellsHitted) {
                 setPointUser((prevPoints) => prevPoints + 1);
+                getSurroundingCells(
+                  shipHit,
+                  setSurroundingCellsUser,
+                  BOARD_SIZE
+                );
               }
             }
             return updatedCells;
@@ -386,7 +442,9 @@ export default function BattleShipsBoard() {
 
   const [wasHitted, setWasHitted] = useState(false); //встановлення стану корабля як влученого
   const [hittedCellId, setHittedCellId] = useState<string>(""); //запам'ятовуємо клітинку яка була поцілена
-  const [unnecessaryCells, setUnnecessaryCells] = useState<string[]>([]); //клітинки навколо знищеного корабля, які не треба перевіряти
+  const [surroundingCellsComputer, setSurroundingCellsComputer] = useState<
+    string[]
+  >([]); //клітинки навколо знищеного корабля, які не треба перевіряти для комп'юетра
 
   //хід комп ютера по полю юзера
   const clickCellComputer = () => {
@@ -418,7 +476,7 @@ export default function BattleShipsBoard() {
             move <= BOARD_SIZE * BOARD_SIZE &&
             !hittedCellsComputer.includes(cellId) &&
             !missedCellsComputer.includes(cellId) &&
-            !unnecessaryCells.includes(cellId)
+            !surroundingCellsComputer.includes(cellId)
           ) {
             break;
           }
@@ -433,7 +491,7 @@ export default function BattleShipsBoard() {
         } while (
           hittedCellsComputer.includes(cellId) ||
           missedCellsComputer.includes(cellId) ||
-          unnecessaryCells.includes(cellId)
+          surroundingCellsComputer.includes(cellId)
         );
       }
 
@@ -458,31 +516,11 @@ export default function BattleShipsBoard() {
             if (allCellsHitted) {
               setPointComputer((prevPoints) => prevPoints + 1);
 
-              // Визначаємо клітинки навколо знищеного корабля
-              shipHit.cells.forEach((cell) => {
-                const cellNumber = parseInt(cell.split("-")[1], 10);
-                const surroundingCells = [
-                  `cell-${cellNumber - 11}`,
-                  `cell-${cellNumber - 10}`,
-                  `cell-${cellNumber - 9}`,
-                  `cell-${cellNumber - 1}`,
-                  `cell-${cellNumber + 1}`,
-                  `cell-${cellNumber + 9}`,
-                  `cell-${cellNumber + 10}`,
-                  `cell-${cellNumber + 11}`,
-                ];
-
-                setUnnecessaryCells((prevUnnecessaryCells) => [
-                  ...prevUnnecessaryCells,
-                  ...surroundingCells.filter(
-                    (surroundingCell) =>
-                      parseInt(surroundingCell.split("-")[1], 10) > 0 &&
-                      parseInt(surroundingCell.split("-")[1], 10) <=
-                        BOARD_SIZE * BOARD_SIZE &&
-                      !prevUnnecessaryCells.includes(surroundingCell)
-                  ),
-                ]);
-              });
+              getSurroundingCells(
+                shipHit,
+                setSurroundingCellsComputer,
+                BOARD_SIZE
+              );
 
               setWasHitted(false);
             } else {
@@ -523,6 +561,7 @@ export default function BattleShipsBoard() {
           <div className={styles.rowBattlfields}>
             {/* поле юзера, по якому ходить комп'ютер */}
             <Battlefield
+              surroundingCells={surroundingCellsComputer}
               playerTurnState={playerTurn}
               onClickCellAuto={clickCellComputer}
               arrOccupiedCells={arrOccupiedCells}
@@ -531,6 +570,7 @@ export default function BattleShipsBoard() {
             />
             {/* поле компа, по якому ходить юзер */}
             <Battlefield
+              surroundingCells={surroundingCellsUser}
               onClickCell={clickCellUser}
               hittedCells={hittedCellsUser}
               missedCells={missedCellsUser}

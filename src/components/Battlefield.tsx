@@ -8,6 +8,7 @@ interface BattlefieldProps {
   hittedCells: string[];
   missedCells: string[];
   playerTurnState?: boolean;
+  surroundingCells: string[];
 }
 
 export default function Battlefield({
@@ -17,6 +18,7 @@ export default function Battlefield({
   onClickCell,
   hittedCells,
   missedCells,
+  surroundingCells,
 }: BattlefieldProps) {
   const cells = Array.from({ length: 100 }, (_, i) => i + 1);
   const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -60,7 +62,8 @@ export default function Battlefield({
                     ? styles.occupiedCell
                     : hittedCells.includes(`cell-${cell}`)
                     ? styles.occupiedCellHitted
-                    : missedCells.includes(`cell-${cell}`)
+                    : missedCells.includes(`cell-${cell}`) ||
+                      surroundingCells.includes(`cell-${cell}`)
                     ? styles.cellMissed
                     : styles.cell
                 }`}
