@@ -13,19 +13,19 @@ In this classic turn-based naval battle, you play against the computer by strate
 
 ## 🎯 How to Play
 
-- 👤 You vs 🤖 Computer – classic 1v1 battleship duel  
-- 🚢 First, manually place your ships on the grid  
-- 🎯 Then, take turns attacking each other's cells  
-- 💥 Sink all enemy ships to win the game!
+-  You vs  Computer – classic 1v1 battleship duel  
+-  First, manually place your ships on the grid  
+-  Then, take turns attacking each other's cells  
+-  Sink all enemy ships to win the game!
 
 ---
 
 ## 🛠 Tech Stack
 
-- ⚛️ React  
-- 🟦 TypeScript  
-- ⚡ Vite  
-- 🎨 CSS Modules
+- React  
+- TypeScript  
+- Vite  
+- CSS Modules
 
 ---
 
